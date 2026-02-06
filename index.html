@@ -227,7 +227,7 @@ html, body {
 
 .envelope-name {
   position: absolute;
-  top: 55%;
+  top: 72%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-family: 'Great Vibes', cursive;
@@ -585,64 +585,77 @@ html, body {
 }
 
 /* ============================================
-   SCREEN 4: TIMELINE / FILMSTRIP
+   SCREEN 4: NOTEBOOK STYLE
    ============================================ */
-.timeline {
+.notebook {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 24px;
   max-width: 600px;
   width: 100%;
   position: relative;
-  padding-left: 32px;
+  background: #FFFEF5;
+  border-radius: 8px;
+  padding: 32px 28px 32px 60px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.1), inset 0 0 60px rgba(255,248,220,0.3);
+  border: 1px solid #E8DCC8;
+  /* Lined paper effect */
+  background-image:
+    repeating-linear-gradient(
+      transparent,
+      transparent 31px,
+      #C8E0F4 31px,
+      #C8E0F4 32px
+    );
+  background-size: 100% 32px;
+  background-position: 0 24px;
 }
 
-.timeline::before {
+.notebook::before {
   content: '';
   position: absolute;
-  left: 8px;
+  left: 48px;
   top: 0;
   bottom: 0;
   width: 2px;
-  background: linear-gradient(to bottom, var(--pink), var(--rose-gold), var(--pink));
+  background: rgba(220, 80, 80, 0.35);
+  z-index: 1;
 }
 
-.timeline-item {
+/* Spiral binding holes */
+.notebook::after {
+  content: '';
+  position: absolute;
+  left: 14px;
+  top: 20px;
+  bottom: 20px;
+  width: 20px;
+  background-image: radial-gradient(circle 5px, #D4D0C8 4px, transparent 5px);
+  background-size: 20px 40px;
+  background-repeat: repeat-y;
+  z-index: 1;
+}
+
+.notebook-entry {
   display: flex;
-  gap: 20px;
-  align-items: flex-start;
+  gap: 16px;
+  align-items: center;
   position: relative;
   opacity: 0;
-  transform: translateX(-20px);
+  transform: translateY(20px);
+  z-index: 2;
 }
 
-.timeline-item.animate-in {
+.notebook-entry.animate-in {
   opacity: 1;
-  transform: translateX(0);
+  transform: translateY(0);
   transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.timeline-item::before {
-  content: '♥';
-  position: absolute;
-  left: -32px;
-  top: 8px;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.7rem;
-  color: var(--rose-gold);
-  background: var(--blush);
-  border: 2px solid var(--pink);
-  border-radius: 50%;
-}
-
-.timeline-item .timeline-photo {
-  width: min(180px, 40vw);
-  height: 140px;
-  border-radius: 12px;
+.notebook-entry .notebook-photo {
+  width: min(160px, 35vw);
+  height: 130px;
+  border-radius: 4px;
   overflow: hidden;
   flex-shrink: 0;
   background: linear-gradient(135deg, var(--cream), var(--blush));
@@ -651,24 +664,36 @@ html, body {
   justify-content: center;
   color: var(--text-light);
   font-size: 0.8rem;
-  box-shadow: 0 4px 16px rgba(183, 110, 121, 0.15);
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.12);
+  transform: rotate(-1deg);
+  border: 3px solid white;
 }
 
-.timeline-item .timeline-photo img {
+.notebook-entry:nth-child(even) .notebook-photo {
+  transform: rotate(1.5deg);
+}
+
+.notebook-entry .notebook-photo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.timeline-item .timeline-text {
+.notebook-entry .notebook-text {
   padding-top: 4px;
 }
 
-.timeline-item .timeline-text .timeline-caption {
-  font-size: 0.95rem;
-  color: var(--text-dark);
-  font-weight: 500;
-  line-height: 1.6;
+.notebook-entry .notebook-text .notebook-caption {
+  font-family: 'Great Vibes', cursive;
+  font-size: 1.15rem;
+  color: #4A4A6A;
+  line-height: 1.8;
+}
+
+.notebook-entry .notebook-text .notebook-doodle {
+  font-size: 0.85rem;
+  color: var(--pink);
+  margin-top: 4px;
 }
 
 /* ============================================
@@ -718,6 +743,8 @@ html, body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transform: scale(0.75);
+  object-position: center top;
 }
 
 .gallery-circle:hover {
@@ -1034,7 +1061,31 @@ html, body {
 /* ============================================
    RESPONSIVE
    ============================================ */
+/* Corner bench decoration */
+.corner-decoration {
+  position: absolute;
+  bottom: 60px;
+  right: 20px;
+  width: clamp(100px, 18vw, 180px);
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.corner-decoration img {
+  width: 100%;
+  height: auto;
+  filter: sepia(0.3) opacity(0.7);
+}
+
 @media (max-width: 768px) {
+  .corner-decoration {
+    width: 90px;
+    bottom: 50px;
+    right: 10px;
+    opacity: 0.1;
+  }
+
   .cards-grid, .scrapbook-grid, .gallery-grid {
     flex-direction: column;
     align-items: center;
@@ -1048,16 +1099,16 @@ html, body {
     grid-row: span 1;
   }
 
-  .timeline {
-    padding-left: 28px;
+  .notebook {
+    padding: 24px 20px 24px 50px;
   }
 
-  .timeline-item {
+  .notebook-entry {
     flex-direction: column;
     gap: 12px;
   }
 
-  .timeline-item .timeline-photo {
+  .notebook-entry .notebook-photo {
     width: 100%;
     height: 180px;
   }
@@ -1104,6 +1155,43 @@ html, body {
 }
 
 /* ============================================
+   PAGE DECORATIONS - REPEATING EMOJI PATTERN
+   ============================================ */
+.page-decorations {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  font-size: 1.4rem;
+  line-height: 2.8;
+  letter-spacing: 1.2em;
+  word-spacing: 0.5em;
+  opacity: 0.18;
+  padding: 10px;
+  white-space: normal;
+  word-break: break-all;
+  animation: patternDrift 20s ease-in-out infinite alternate;
+  user-select: none;
+}
+
+@keyframes patternDrift {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-15px); }
+}
+
+@media (max-width: 768px) {
+  .page-decorations {
+    font-size: 1.1rem;
+    letter-spacing: 0.8em;
+    opacity: 0.14;
+  }
+}
+
+/* ============================================
    SWIPE HINT (mobile)
    ============================================ */
 .swipe-hint {
@@ -1139,6 +1227,7 @@ html, body {
 
   <!-- SCREEN 1: Love Letter -->
   <div class="screen active" id="screen-0">
+    <div class="page-decorations">🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰</div>
     <div class="envelope-wrapper" id="envelopeWrapper">
       <div class="envelope" id="envelope">
         <div class="envelope-body"></div>
@@ -1165,21 +1254,25 @@ html, body {
 
   <!-- SCREEN 2: First 3 Dates -->
   <div class="screen" id="screen-1">
+    <div class="page-decorations">🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰</div>
+    <div class="corner-decoration">
+      <img src="images/Bench.png" alt="" loading="lazy">
+    </div>
     <h2 class="section-title">Where It All Began</h2>
     <div class="floral-divider">&#10047;</div>
-    <p class="section-subtitle">Our first moments together</p>
+    <p class="section-subtitle">I'll always remember 6th of Feb 💕</p>
     <div class="cards-grid">
       <div class="memory-card" style="transition-delay: 0.1s">
-        <div class="card-image" id="img-2-1">Photo 1 - Date 1</div>
-        <div class="card-caption">Subtitle goes here</div>
+        <div class="card-image" id="img-2-1"><img src="images/FIRST3DATES.jpg" alt="First Date" loading="lazy"></div>
+        <div class="card-caption">You are so cute, I'm so glad I captured the vibe 📸😍</div>
       </div>
       <div class="memory-card" style="transition-delay: 0.3s">
-        <div class="card-image" id="img-2-2">Photo 2 - Date 2</div>
-        <div class="card-caption">Subtitle goes here</div>
+        <div class="card-image" id="img-2-2"><img src="images/FIRST3DATES2.jpg" alt="Second Date" loading="lazy"></div>
+        <div class="card-caption">Honoured that you golf with me ⛳💚</div>
       </div>
       <div class="memory-card" style="transition-delay: 0.5s">
-        <div class="card-image" id="img-2-3">Photo 3 - Date 3</div>
-        <div class="card-caption">Subtitle goes here</div>
+        <div class="card-image" id="img-2-3"><img src="images/FIRST3DATES3.jpg" alt="Third Date" loading="lazy"></div>
+        <div class="card-caption">And we captured the day and the feeling &lt;3 🥰✨</div>
       </div>
     </div>
     <div class="nav-buttons">
@@ -1194,24 +1287,25 @@ html, body {
 
   <!-- SCREEN 3: Scrapbook / Polaroid -->
   <div class="screen" id="screen-2">
-    <h2 class="section-title">Sweet Memories</h2>
+    <div class="page-decorations">🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰</div>
+    <h2 class="section-title">Adventurous Dates</h2>
     <div class="floral-divider">&#10048;</div>
-    <p class="section-subtitle">Moments I never want to forget</p>
+    <p class="section-subtitle">We've seen so much</p>
     <div class="scrapbook-grid">
       <div class="polaroid" style="--tilt: -3deg; --tape-rotate: -5deg; transition-delay: 0.1s">
         <div class="tape"></div>
-        <div class="photo" id="img-3-1">Photo 1</div>
-        <div class="polaroid-caption">Subtitle goes here</div>
+        <div class="photo" id="img-3-1"><img src="images/CUTEDATE1.JPG" alt="Cute Date 1" loading="lazy"></div>
+        <div class="polaroid-caption">I make things for u 🎨💝</div>
       </div>
       <div class="polaroid" style="--tilt: 2deg; --tape-rotate: 3deg; transition-delay: 0.3s">
         <div class="tape"></div>
-        <div class="photo" id="img-3-2">Photo 2</div>
-        <div class="polaroid-caption">Subtitle goes here</div>
+        <div class="photo" id="img-3-2"><img src="images/CUTEDATE2.jpg" alt="Cute Date 2" loading="lazy"></div>
+        <div class="polaroid-caption">I row hard for u 🚣💪</div>
       </div>
       <div class="polaroid" style="--tilt: -1deg; --tape-rotate: -2deg; transition-delay: 0.5s">
         <div class="tape"></div>
-        <div class="photo" id="img-3-3">Photo 3</div>
-        <div class="polaroid-caption">Subtitle goes here</div>
+        <div class="photo" id="img-3-3"><img src="images/CUTEDATE3.jpg" alt="Cute Date 3" loading="lazy"></div>
+        <div class="polaroid-caption">I cook hard for u 👨‍🍳🔥</div>
       </div>
     </div>
     <div class="nav-buttons">
@@ -1224,28 +1318,32 @@ html, body {
     </div>
   </div>
 
-  <!-- SCREEN 4: Timeline -->
+  <!-- SCREEN 4: Notebook -->
   <div class="screen" id="screen-3">
-    <h2 class="section-title">Our Story Unfolds</h2>
+    <div class="page-decorations">🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰</div>
+    <h2 class="section-title">I Love Being Reunited</h2>
     <div class="floral-divider">&#10043;</div>
-    <p class="section-subtitle">Every chapter with you is my favorite</p>
-    <div class="timeline">
-      <div class="timeline-item" style="transition-delay: 0.1s">
-        <div class="timeline-photo" id="img-4-1">Photo 1</div>
-        <div class="timeline-text">
-          <div class="timeline-caption">Subtitle goes here</div>
+    <p class="section-subtitle">Hits different</p>
+    <div class="notebook">
+      <div class="notebook-entry" style="transition-delay: 0.1s">
+        <div class="notebook-photo" id="img-4-1"><img src="images/FLOWERS1.jpg" alt="Flowers 1" loading="lazy"></div>
+        <div class="notebook-text">
+          <div class="notebook-caption">"Yellow" looks good on you</div>
+          <div class="notebook-doodle">&#10084; &#10084; &#10084;</div>
         </div>
       </div>
-      <div class="timeline-item" style="transition-delay: 0.3s">
-        <div class="timeline-photo" id="img-4-2">Photo 2</div>
-        <div class="timeline-text">
-          <div class="timeline-caption">Subtitle goes here</div>
+      <div class="notebook-entry" style="transition-delay: 0.3s">
+        <div class="notebook-photo" id="img-4-2"><img src="images/FLOWERS2.jpg" alt="Flowers 2" loading="lazy"></div>
+        <div class="notebook-text">
+          <div class="notebook-caption">"Extra good" on you</div>
+          <div class="notebook-doodle">&#10047; &#10047; &#10047;</div>
         </div>
       </div>
-      <div class="timeline-item" style="transition-delay: 0.5s">
-        <div class="timeline-photo" id="img-4-3">Photo 3</div>
-        <div class="timeline-text">
-          <div class="timeline-caption">Subtitle goes here</div>
+      <div class="notebook-entry" style="transition-delay: 0.5s">
+        <div class="notebook-photo" id="img-4-3"><img src="images/FLOWERS3.jpg" alt="Flowers 3" loading="lazy"></div>
+        <div class="notebook-text">
+          <div class="notebook-caption">Never let go</div>
+          <div class="notebook-doodle">&#10022; &#10022; &#10022;</div>
         </div>
       </div>
     </div>
@@ -1261,21 +1359,22 @@ html, body {
 
   <!-- SCREEN 5: Circular Gallery -->
   <div class="screen" id="screen-4">
+    <div class="page-decorations">🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰</div>
     <h2 class="section-title">Captured in Time</h2>
     <div class="floral-divider">&#10049;</div>
-    <p class="section-subtitle">Moments that take my breath away</p>
+    <p class="section-subtitle">So many moments on FaceTime in so many different places</p>
     <div class="gallery-grid">
       <div class="gallery-item" style="transition-delay: 0.1s">
-        <div class="gallery-circle" id="img-5-1">Photo 1</div>
-        <div class="gallery-caption">Subtitle goes here</div>
+        <div class="gallery-circle" id="img-5-1"><img src="images/FACTETIME1.PNG" alt="FaceTime 1" loading="lazy"></div>
+        <div class="gallery-caption">Wedding Planning</div>
       </div>
       <div class="gallery-item" style="transition-delay: 0.3s">
-        <div class="gallery-circle" id="img-5-2">Photo 2</div>
-        <div class="gallery-caption">Subtitle goes here</div>
+        <div class="gallery-circle" id="img-5-2"><img src="images/FACTETIME2.PNG" alt="FaceTime 2" loading="lazy"></div>
+        <div class="gallery-caption">On-the-go</div>
       </div>
       <div class="gallery-item" style="transition-delay: 0.5s">
-        <div class="gallery-circle" id="img-5-3">Photo 3</div>
-        <div class="gallery-caption">Subtitle goes here</div>
+        <div class="gallery-circle" id="img-5-3"><img src="images/FACTETIME3.PNG" alt="FaceTime 3" loading="lazy"></div>
+        <div class="gallery-caption">Car time</div>
       </div>
     </div>
     <div class="nav-buttons">
@@ -1290,22 +1389,23 @@ html, body {
 
   <!-- SCREEN 6: Family Visit (Collage) -->
   <div class="screen" id="screen-5">
+    <div class="page-decorations">🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰</div>
     <h2 class="section-title">When Your Family Came to Our World</h2>
     <div class="floral-divider">&#10044;</div>
     <p class="section-subtitle">A time that meant everything</p>
     <div class="collage-section">
       <div class="collage-grid">
         <div class="collage-item" style="transition-delay: 0.1s">
-          <div class="collage-photo" id="img-6-1">Photo 1</div>
-          <div class="collage-overlay">Subtitle goes here</div>
+          <div class="collage-photo" id="img-6-1"><img src="images/Dubai1.jpg" alt="Dubai 1" loading="lazy"></div>
+          <div class="collage-overlay">Beach Time</div>
         </div>
         <div class="collage-item" style="transition-delay: 0.3s">
-          <div class="collage-photo" id="img-6-2">Photo 2</div>
-          <div class="collage-overlay">Subtitle goes here</div>
+          <div class="collage-photo" id="img-6-2"><img src="images/Dubai2.jpg" alt="Dubai 2" loading="lazy"></div>
+          <div class="collage-overlay">Coffee Time</div>
         </div>
         <div class="collage-item" style="transition-delay: 0.5s">
-          <div class="collage-photo" id="img-6-3">Photo 3</div>
-          <div class="collage-overlay">Subtitle goes here</div>
+          <div class="collage-photo" id="img-6-3"><img src="images/DUBAI3.JPG" alt="Dubai 3" loading="lazy"></div>
+          <div class="collage-overlay">Baddie Time</div>
         </div>
       </div>
       <div class="dubai-skyline"></div>
@@ -1320,50 +1420,16 @@ html, body {
     </div>
   </div>
 
-  <!-- SCREEN 7: Recent Adventures (Journal) -->
+  <!-- SCREEN 7: Happily Ever After -->
   <div class="screen" id="screen-6">
-    <h2 class="section-title">Our Recent Adventures</h2>
-    <div class="floral-divider">&#10047;</div>
-    <p class="section-subtitle">The latest chapters of us</p>
-    <div class="journal-stack">
-      <div class="journal-entry" style="transition-delay: 0.1s">
-        <div class="journal-photo" id="img-7-1">Photo 1</div>
-        <div>
-          <div class="journal-text">Subtitle goes here</div>
-        </div>
-      </div>
-      <div class="journal-entry" style="transition-delay: 0.3s">
-        <div class="journal-photo" id="img-7-2">Photo 2</div>
-        <div>
-          <div class="journal-text">Subtitle goes here</div>
-        </div>
-      </div>
-      <div class="journal-entry" style="transition-delay: 0.5s">
-        <div class="journal-photo" id="img-7-3">Photo 3</div>
-        <div>
-          <div class="journal-text">Subtitle goes here</div>
-        </div>
-      </div>
-    </div>
-    <div class="nav-buttons">
-      <button class="nav-btn back" onclick="goToScreen(5)">
-        <span class="arrow arrow-left">&larr;</span> Back
-      </button>
-      <button class="nav-btn" onclick="goToScreen(7)">
-        Next <span class="arrow arrow-right">&rarr;</span>
-      </button>
-    </div>
-  </div>
-
-  <!-- SCREEN 8: Happily Ever After -->
-  <div class="screen" id="screen-7">
+    <div class="page-decorations">🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰 🌹 🌻 🍫 🍬 🌸 🐬 🎂 😍 🦭 🇰🇷 🇯🇵 🍰</div>
     <div class="finale-container">
       <div class="sparkle-container" id="sparkleContainer"></div>
       <div class="finale-text" id="finaleText">And they lived happily ever after...</div>
       <p class="finale-subtitle" id="finaleSubtitle">Forever & Always</p>
     </div>
     <div class="nav-buttons" style="margin-top: 48px;">
-      <button class="nav-btn back" onclick="goToScreen(6)">
+      <button class="nav-btn back" onclick="goToScreen(5)">
         <span class="arrow arrow-left">&larr;</span> Back
       </button>
     </div>
@@ -1376,7 +1442,7 @@ html, body {
    APP STATE
    ============================================ */
 let currentScreen = 0;
-const totalScreens = 8;
+const totalScreens = 7;
 let isTransitioning = false;
 let envelopeOpened = false;
 let letterRevealed = false;
@@ -1503,7 +1569,7 @@ function animateScreenContent(screenIndex) {
 
   // Cards, polaroids, timeline items, etc.
   const animatables = screen.querySelectorAll(
-    '.memory-card, .polaroid, .timeline-item, .gallery-item, .collage-item, .journal-entry'
+    '.memory-card, .polaroid, .notebook-entry, .gallery-item, .collage-item, .journal-entry'
   );
 
   animatables.forEach((el, i) => {
@@ -1514,7 +1580,7 @@ function animateScreenContent(screenIndex) {
   });
 
   // Finale screen
-  if (screenIndex === 7) {
+  if (screenIndex === 6) {
     const finaleText = document.getElementById('finaleText');
     const finaleSub = document.getElementById('finaleSubtitle');
     finaleText.classList.remove('animate-in');
@@ -1571,20 +1637,29 @@ document.getElementById('envelopeWrapper').addEventListener('click', function() 
    LETTER CONTENT
    ============================================ */
 const letterLines = [
-  "My dearest Hafsa,",
+  "My Dearest Hafsa,",
   "",
-  "This is a placeholder for your love letter.",
-  "Each line will fade in one by one,",
-  "creating a beautiful reading experience.",
+  "From the very first moment I saw you, my heart skipped a beat 💓. Butterflies filled my stomach, my words got tangled, and somewhere deep inside me, I just knew - you were the one I'd been waiting for my entire life.",
   "",
-  "Replace these lines with your actual letter text.",
-  "The animation will adjust automatically",
-  "to however many lines you write.",
+  "I was standing in the corner, oblivious that my life was about to change forever. That you would enter it with a bang. There was something about your energy. Before I even spoke to you, before I even knew your story, you lit up the entire room. I couldn't look away. And from that moment, I have never stopped thinking about you. You are my light. You are my warmth. You are my everything.",
   "",
-  "Every word you add will appear",
-  "with a gentle, romantic animation.",
+  "I love your kindness. The way you care so deeply for everyone around you (even when I'm being a loser), the way your warmth fills every room you walk into. I love your strength, how you carry yourself as a lady. You're soooo classy MashAllah. I love your laugh, the way your eyes light up when you're happy, and how your smile alone can turn my worst days into my best. I love how passionate you are, how determined, how brilliantly your mind works. I love how fiercely you love your family, how you show up for the people you care about without ever being asked. You inspire me every single day to be a better man. I'm trying so hard to be the man that you deserve, because Hafsa, you deserve everything.",
   "",
-  "With all my love,"
+  "And MashAllah, you are beautiful. The kind of beauty that stops me in my tracks every time I see you. Your eyes, your smile, the way you carry yourself. Everything about you takes my breath away. And that smile, Hafsa, it could honestly fix anything. I still get butterflies every single time I see it. I told you, when I see a real smile, I can't help but feel 100 times better.",
+  "",
+  "The distance between us has only made one thing clearer to me. There is no version of my life that makes sense without you in it. You are not just my fiancée. You are my best friend, my home, my peace, and my greatest adventure.",
+  "",
+  "And what an adventure it's going to be. I think about our future all the time - building our home together, a place that's just ours, filled with your warmth and your laughter. I think about all the places we're going to explore together, all the trips, all the new memories waiting for us. I think about the life we're going to create, side by side, every single day. I can't wait for all of it.",
+  "",
+  "I cannot wait to close this distance forever. To wake up next to you every morning, to build our life together, to grow old with you. You are my commitment, my promise, and my forever 💞.",
+  "",
+  "I love you more deeply than words on any page or website could ever capture. But I will spend the rest of my life trying to show you.",
+  "",
+  "Thank you for an incredible 525,600 minutes. Here's to many, many more.",
+  "",
+  "Forever & Always Your Romantic ;)",
+  "",
+  "Rabii 💕"
 ];
 
 function buildLetterContent() {
